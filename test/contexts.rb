@@ -1,9 +1,9 @@
 # require needed files
 require './test/sets/brackets'
+require './test/sets/documents'
 require './test/sets/games'
 require './test/sets/guardians'
 require './test/sets/households'
-require './test/sets/locations'
 require './test/sets/registrations'
 require './test/sets/roster_spots'
 require './test/sets/schools'
@@ -16,18 +16,18 @@ require './test/sets/volunteers'
 
 module Contexts
   # explicitly include all sets of contexts used for testing
+  include Contexts::Tournaments
   include Contexts::Brackets
   include Contexts::Games
+  include Contexts::Teams
+  include Contexts::Volunteers
+  include Contexts::Users
+  include Contexts::TeamGames
+  include Contexts::Schools
   include Contexts::Guardians
   include Contexts::Households
-  include Contexts::Locations
+  include Contexts::Students
+  include Contexts::Documents
   include Contexts::Registrations
   include Contexts::RosterSpots
-  include Contexts::Schools
-  include Contexts::Students
-  include Contexts::TeamGames
-  include Contexts::Teams
-  include Contexts::Tournaments
-  include Contexts::Users
-  include Contexts::Volunteers
 end
