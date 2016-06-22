@@ -5,6 +5,7 @@ FactoryGirl.define do
     description "Continuously Helping to Uplift City Kids"
     start_date 1.years.ago.to_date
     end_date nil
+    active true
   end
 
   factory :bracket do
@@ -14,6 +15,7 @@ FactoryGirl.define do
     max_age 10
     max_students 100
     name "Boys 7-10"
+    active true
   end
 
   factory :games do
@@ -39,12 +41,28 @@ FactoryGirl.define do
     receives_text_msgs true
     active true
     dob Date.today
+    date Date.today
     street "5000 Forbes Ave"
     city "Pittsburgh"
     state "PA"
     zip 15213
     day_phone 1234567890
     shirt_size "M"
+    years_with_proj_chuck 0
+    position "helper"
+    team_coached "Team One"
+    child_name "Jack"
+    clearance_copy "image.jpg"
+    not_available "text"
+    two_skills "managing and cleaning"
+    suggestions "no suggestions"
+    volunteer_sign "Pranita Ramakrishnan"
+    volunteer_sign_date Date.today
+    act33_clearance true
+    act34_clearance true
+    act153_clearance true
+    gender "female"
+    age_range "18-25"
   end
 
   factory :user do
@@ -53,6 +71,9 @@ FactoryGirl.define do
     email "user123@user.com"
     password "secret"
     password_confirmation "secret"
+    active_after Date.today
+    password_reset_token "89ok"
+    password_reset_sent_at Date.today
     active true
   end
 
@@ -70,11 +91,14 @@ FactoryGirl.define do
 
   factory :guardian do
     association :household
+    association :user
     email "name@cmu.edu"
     first_name "Jane"
     last_name "Doe"
     cell_phone "412-678-9000"
     receives_text_msgs true
+    relation "Mother"
+    is_emergency_contact true
     active true
   end
 
@@ -85,6 +109,13 @@ FactoryGirl.define do
     zip "15213"
     home_phone "412-000-0000"
     county "Allegheny"
+    has_proof_of_insurance true
+    insurance_provider "UPMC"
+    insurance_policy_no "12345678"
+    family_physicians "physician"
+    physician_phone "4124124124"
+    proof_of_insurance "image.jpg"
+    poi_checkoff true
     active true
   end
 
@@ -98,25 +129,15 @@ FactoryGirl.define do
     email "joe_smith@comcast.net"
     grade 9
     gender "male"
-    emergency_contact_name "Jane Smith"
-    emergency_contact_phone "412-000-0000"
-    has_birth_certificate true
     allergies "none"
     medications "none"
-    security_question "What is your dog's name?"
-    security_response "Spot"
-    parent_consent_agree true
-    parent_promise_agree true
-    parent_release_agree true
-    child_promise_agree true
     active true
-    emergency_contact_relation "parent"
-    insurance_provider "UPMC"
-    insurance_policy_no 1
-    family_physician "Dr. Smith"
-    physical_date Date.today
-    child_signature "Me."
     jersey_size "Youth-Medium"
+    gpa "4.0"
+    past_participation 0
+    twitter "joe_smith"
+    facebook "joe_smith"
+    instagram "joe_smith"
   end
   
   factory :document do
