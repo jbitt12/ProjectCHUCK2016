@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 fixedheight">
+  <table class="table table-bordered">
+   <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Gender</th>
+      <!-- <th></th> -->
+    </tr>
+  </thead> 
+
+  <tbody>
+   <% @students.each do |student| %>
+   <% flag = false %>
+   <% rs = student.roster_spots %>
+        <% rs.each do |spot| %>
+          <% if spot.active? %>
+            <% flag = true %>
+            <% break %>
+          <% end %> 
+        <%end %> 
+   <%if flag == false %>
+     <tr>
+      <% if student.gender == "male"%>
+      <td class="boy"><%= link_to student.proper_name, student %></td>
+      <%else%>
+      <td class="girl"><%= link_to student.proper_name, student %></td>
+      <%end%> 
+      <td><%= student.age %></td>
+      <td><%= student.gender.capitalize %></td>
+      <!-- <td><%#= link_to(image_tag('edit.png'), edit_student_path(student)) %></td> -->
+      <!-- <td><%#= link_to(image_tag('delete.png'), student, method: :delete, data: { confirm: 'Are you sure?' }) %></td> -->
+    </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+</div>
+</div>
+</div>

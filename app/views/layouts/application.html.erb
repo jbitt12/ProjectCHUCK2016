@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <title>ProjectChuck2016</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- <link href="../../../assets/images/apple_touch_icon.png" rel="apple-touch-icon"/> -->
+
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%#= javascript_include_tag "application"  %> 
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag    "bootstrap" %>
+  
+</head>
+<body>
+  <% if logged_in? and current_user.role? :admin %>
+    <%# render :partial => "partials/admin_nav" %> 
+    <%= render :partial => "partials/admin_nav_prod" %> 
+  <% else %>
+    <%= render :partial => "partials/nav" %>
+  <% end %>  
+  <div class="container">
+    <div class="row">
+      <div id="main_content">
+        <%= yield %>
+      </div>
+    </div>
+  </div>  
+    <footer>
+      <div class="row">
+        <div id="footer">
+          <%= render partial: 'partials/footer' %>
+        </div>
+      </div> 
+    </footer> 
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "my_code" %>
+
+    <!-- Get rid of \A and \z from regex because they don't play well with html -->
+    <script>
+      var inputs = document.getElementsByTagName("INPUT");
+      var i;
+      for (i = 0; i < inputs.length; i++){
+        var input = inputs[i];
+        var p = input.pattern
+        if (p != null && p.length >= 2){
+          if (p.substring(0,2) == "\\A"){
+            p = p.substring(2,p.length)
+          }
+          if (p.substring(p.length-2, p.length) == "\\z"){
+            p = p.substring(0, p.length - 2)
+          }
+          input.setAttribute("pattern", p)
+        }
+      }
+    </script>
+
+  </body>
+</html>

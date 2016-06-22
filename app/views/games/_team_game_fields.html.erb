@@ -1,0 +1,9 @@
+  <div class="field">
+    <%= f.label :team_id %><br>
+    <%= f.input_field :team_id, prompt: "Please Select...", collection: Team.all.alphabetical, :class => "input-lg" %>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label :score %><br>
+    <%= f.input_field :score , :class => "input-lg" %>
+  </div>

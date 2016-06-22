@@ -1,0 +1,37 @@
+<div class="container well">
+<center><h2>Registrations</h2>
+<%= link_to 'New Registration', new_registration_path %></center>
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Student</th>
+      <th>Bracket</th>
+      <th>Active </th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @registrations.each do |registration| %>
+      <tr>
+        <td><%= link_to(image_tag('expand24.png'), registration) %></td>
+        <td><%= registration.student.proper_name %></td>
+        <td><%= registration.bracket.gender + ": " + registration.bracket.min_age.to_s + " - " + registration.bracket.max_age.to_s %></td>
+        <td><%= registration.active %></td>
+        <!-- <td><%#= link_to 'Show', registration %></td> -->
+        <td><%= link_to(image_tag('edit.png'), edit_registration_path(registration)) %></td>
+        <td><%= link_to(image_tag('delete.png'), registration, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="paginate">
+<%= will_paginate @registrations, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>
+
+</div>

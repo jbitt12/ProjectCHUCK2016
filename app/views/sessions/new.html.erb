@@ -1,0 +1,26 @@
+<div class = "well">
+
+<center><h2>Log In</h2> <br>
+
+<%= form_tag sessions_path do %>
+
+<p><%= flash[:message] %></p>
+
+<div class="control-group">
+  <%= label_tag :username %>
+  <div class="controls">
+    <%= text_field_tag :username, params[:username] %>
+  </div>
+</div>
+
+<div class="control-group">
+  <%= label_tag :password %>
+  <div class="controls">
+    <%= password_field_tag :password %>
+  </div>
+</div>
+
+<div class="actions"><%= submit_tag "Log In" %></div> </center>
+<% end %>
+
+</div>

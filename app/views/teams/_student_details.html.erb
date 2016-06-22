@@ -1,0 +1,47 @@
+
+  <center><h2>Team Roster</h2>
+    <% if logged_in? and current_user.role == "admin" and not(@team.full?) %>
+<%= link_to 'Add Student', assign_student_path(@team) %>
+<% end %>
+</center>
+<br>
+
+  <table class="table">
+   <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>School</th>
+      <th>Student Cell Phone</th>
+      <th>Allergies</th>
+      <th>Medications</th>
+      <th>Jersey Size</th>
+      <th>Cleared?</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead> 
+
+  <tbody>
+   <% @students.each do |student| %>
+   
+   <tr>
+    <td><%= link_to student.proper_name, student %></td>
+    <td><%= student.age %></td>
+    <td><%= student.school %></td> 
+    <td><%= student.cell_phone %></td>
+    <td><%= student.allergies %></td>
+    <td><%= student.medications %></td> 
+    <td><%= student.jersey_size %></td>
+    <td>
+      <% if (student.has_report_card) && (student.has_proof_of_insurance) && (student.has_physical) && (student.has_birth_certificate) %>
+        <%=link_to image_tag("check16.png")%>
+      <% else %>
+        <%=link_to image_tag("missing16.png")%>
+      <% end %></td>
+    <td class="noprint"><%= link_to(image_tag('edit.png'), edit_student_path(student)) %></td>
+  </tr>
+  <% end %>
+</tbody>
+</table>
+

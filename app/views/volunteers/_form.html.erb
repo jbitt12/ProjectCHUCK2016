@@ -1,0 +1,377 @@
+<%= simple_nested_form_for(@volunteer) do |f| %>
+<% if @volunteer.errors.any? or @volunteer.user.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@volunteer.errors.count + @volunteer.user.errors.count, "error") %> prohibited this volunteer from being saved:</h2>
+
+  <ul>
+    <% @volunteer.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+    <% @volunteer.user.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class ="container well">
+
+  <%= render :partial => 'partials/instructions' %>
+
+  <% if controller.action_name=="edit"%>
+  <% if logged_in? and not(current_user.role? :volunteer) %>
+  <h3>Team Assignment</h3><br>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :team_id, label: "Team Coached" %> <br>
+        <%= f.input_field :team_id, prompt: "Please Select...", collection: Team.all %>
+      </div>
+    </div>
+  </div>
+
+
+  <br>
+  <% end %>
+  <% end %>
+
+
+  <h3>Who Are You?</h3><br>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :first_name %> <br>
+        <%= f.text_field :first_name, :class => "input-lg required" %>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-6">
+     <div class="field">
+      <%= f.label :last_name %> <br>
+      <%= f.text_field :last_name, :class => "input-lg required" %>
+    </div>
+  </div>
+</div>
+
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :role, :label => "What position are you registering for?" %> <br>
+      <%= f.input_field :role, prompt: "Please Select...", collection: Volunteer::ROLE_ARRAY[1,6] %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :dob, :label => "Birthday: Month/Day" %> <br>
+      <%= f.date_select :dob, { :discard_year => true} %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :shirt_size, :label => "Shirt Size:" %><br>
+      <!--Shirt Size: S, M, L, XL, 2XL, 3XL, 4XL, 5XL-->
+      <%= f.input_field :shirt_size, prompt: "Please Select...", collection: Volunteer::SHIRTSIZES %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :gender, :label => "Gender:" %><br>
+      <%= f.input_field :gender, prompt: "Please Select...", collection: Volunteer::GENDER_ARRAY %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :age_range, :label => "Age Range:" %><br>
+      <%= f.input_field :age_range, prompt: "Please Select...", collection: Volunteer::AGE_RANGE_LIST %>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+
+<%# if controller.action_name=="new" or (logged_in? and current_user.role? :admin) %>
+<br>
+<%= f.simple_fields_for :user do |user_form| %>
+  <%= render :partial => "user_fields", :locals => { :f => user_form } %>
+  <% end %><br>
+
+<br><hr>
+<%# end %>
+
+<h3>Address</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :street %> <br>
+      <%= f.text_field :street, :class => "input-lg required" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :city %> <br>
+      <%= f.text_field :city, :class => "input-lg required" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :state %> <br>
+      <%= f.input_field :state, prompt: "Please Select...", collection: Household::STATES_LIST %>
+
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :zip %> <br>
+      <%= f.text_field :zip, :class => "input-lg required zip" %>
+    </div>
+  </div>
+</div>
+
+<br><hr>
+
+<h3>Contact Information</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :day_phone %> <br>
+      <%= f.text_field :day_phone, :class => "input-lg required phone" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :cell_phone %> <br>
+      <%= f.text_field :cell_phone, :class => "input-lg phone" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label "Would you like to receive text messages regarding any official communication?" %><br>
+      <%= f.check_box :receives_text_msgs %>
+      <%= f.label "Yes (or unselect the box if you would like to opt-out)" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.text_field :email, :class => "input-lg email" %>
+    </div>
+  </div>
+</div>
+
+<br><hr>
+
+<h3>Your History with Project CHUCK</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :years_with_proj_chuck, :label => "Please indicate number of years you have been with Project CHUCK. If none, please enter 0." %><br>
+      <%= f.input_field :years_with_proj_chuck, prompt: "Please Select...", collection: Volunteer::PROJECTCHUCK_YEARS.map {|y| y.to_s == "1" ? y.to_s + " year" : y.to_s + " years"} %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label "What position(s) would you like to volunteer for?" %> <br>
+      <%= f.input_field :position, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label "What teams have you coached for?" %><br>
+      <%= f.input_field :team_coached, :class => "input-lg" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label "If your child is playing, what is his/her name?" %><br>
+      <%= f.input_field :child_name, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12"> 
+    <h5>Indicate clearance(s) you have &nbsp; &nbsp; &nbsp; <a href="/volunteer_clearances_help.pdf" target="_blank" >(Why do I need these?)</a></h5> 
+    <div class="field">
+      <!-- <p>For more information click <a href="volunteer_faq.pdf" target="_blank">here</a></p> -->
+      <%= f.input :act33_clearance, as: :boolean, checked_value: true, unchecked_value: false, :label=>"Pennsylvania Child Abuse History Clearance (Act 33)"%>
+      <!--If answered yes, please attach a copy of the clearance via carrier_wave gem-->
+    </div>
+    <div class="field">
+      <%= f.input :act34_clearance, as: :boolean, checked_value: true, unchecked_value: false, :label=>"Pennsylvania State Police Criminal Record Check (Act 34)"%>
+    </div>
+    <div class="field">
+      <%= f.input :act153_clearance, as: :boolean, checked_value: true, unchecked_value: false, :label=>"FBI Fingerprint based record check (Act 153)"%>
+    </div>
+  </div>
+</div>
+
+<br><hr>
+
+<h3>Availability and Feedback</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="field">
+      <%= f.label "Are there any days you will not be able to volunteer during camp, list below:" %><br>
+      <%= f.text_area :not_available, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="field">
+      <%= f.label "What are two important skills you want to focus on in this year’s camp?" %><br>
+      <%= f.text_area :two_skills, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="field">
+      <%= f.label "What suggestions would you have to improve this year’s camp if you volunteered last year?" %><br>
+      <%= f.text_area :suggestions, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br><hr>
+
+
+</div>
+
+<!--"volunteer_sign"-->
+
+<!-- <div class="row">
+  <div class="col-sm-12">
+    <div class="field">
+<<<<<<< HEAD
+      <%#= f.label "Signature" %><br>
+      <%#= f.input_field :volunteer_sign, :class => "input-lg" %>
+=======
+      <%#= f.label "Signature" %><br>
+      <%#= f.input_field :volunteer_sign, :class => "input-lg required" %>
+>>>>>>> 8f145a025bac8ac3844dbb0dceb0a9ad37124a5f
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="field">
+<<<<<<< HEAD
+      <%#= f.label "Date" %><br>
+      <%#= f.date_select :volunteer_sign_date, :class => "input-lg" %>
+=======
+      <%#= f.label "Date" %><br>
+      <%#= f.input_field :volunteer_sign_date, order: [:month, :day, :year]%>
+>>>>>>> 8f145a025bac8ac3844dbb0dceb0a9ad37124a5f
+    </div>
+  </div>
+</div> -->
+
+</div>
+<% if controller.action_name=="new" or controller.action_name=="create"%>
+
+<div class="well">
+
+  <center><h3>Statement of Responsibilities and Release</h3></center>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-2">
+    </div>
+    <div class="col-xs-6 col-sm-8">
+  <!-- </div>
+  <div class="col-xs-6 col-sm-6"> -->
+    <center><p>Thank you for volunteering your time for Project CHUCK. <br><br>
+
+     To participate in Project CHUCK and as a Best of the Batch volunteer in consideration of the services to be performed by its sponsors, officers, and staff, I do hereby assume all the risks and hazards incidental to the conduct of the activities, and I do further hereby release, absolve, indemnify, and hold harmless Project CHUCK, operated and sponsored by the Best of the Batch, its sponsors, officers, staff, and volunteers of and from alll manner of action and actions, cause or causes of action, suits, debts, and sums of money, claims of demands, whatsoever, in law or equity, arising out of or pursuant to the conduct of the activities. I am fully aware of the risks inherent to this activity and should not participate or allow my child to participate unless medically able. I assumed all risks associated with this activity. I also agree that photographs, recordings, or any other record may be used for the purpose of promoting programs operated or sponsored by Best of the Batch. In case of accident or illness, I authorize a representative of Project CHUCK to obtain immediate care deemed necessary by licensed medical personnel. I hereby take responsibility for the above information and it is accurate to the best of my knowledge. <br><br>
+     By signing means you have read and understand the rules and regulations given by Best of the Batch Foundation for Project CHUCK. Any violations of these rules will result in immediate dismissal from the program. I have read and fully understand that these terms are contractual and not a mere recital and sign it voluntarily and hereby take responsibility for the above information and release Best of the Batch Foundation of any injuries and obligations.
+   </p></center>
+
+   <center><div class="sigPad">
+    <!-- <p class="drawItDesc">* Volunteer: Sign in the box below</p> -->
+    <ul class="sigNav">
+      <li class="drawIt"></li>
+      <li class="clearButton"><a href="#clear">Clear</a></li>
+    </ul>
+    <div class="sig sigWrapper">
+      <canvas class="pad" width="398" height="150"></canvas>
+      <input type="hidden" name="output" class="output">
+    </div>
+  </div></center>
+</div>
+<div class="col-xs-6 col-sm-2">
+</div>
+</div>
+
+<br><br>
+</div>
+</div>
+
+<% end %>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="actions">
+      <%= f.submit "Submit Registration", :class => 'btn btn-success successbtn', data:{ confirm:"By submitting, you affirm that all information entered is accurate to the best of your knowledge."} %>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="actions">
+      <%= link_to 'Cancel Registration', home_path, :class => 'btn btn-danger cancelbtn', data:{ confirm:"Are you sure you want to cancel this form?"} %>
+    </div>
+  </div>
+</div>
+<% end %>

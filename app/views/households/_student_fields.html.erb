@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-8">
+    </div>
+    <div class="col-xs-12 col-sm-4">
+    <%= f.link_to_remove("X Remove student", :class => "btn removelink") %> <br>
+  </div>
+  </div>
+  
+  <h3>Student Participant Information</h3>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <%#= f.input :first_name, :class => 'input-lg' %>
+      <div class="field">
+        <%= f.label :first_name %> <br>
+        <%= f.text_field :first_name, :class => "input-lg required" %>
+      </div> 
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :last_name %> <br>
+        <%= f.text_field :last_name, :class => "input-lg required" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class ="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :gender %> <br>
+        <%= f.input_field :gender, collection: Student::GENDER_ARRAY, prompt: "Please Select..." %>
+      </div>
+    </div>
+    <div class="col-xs-4 col-sm-4">
+      <div class="field">
+        <%= f.label :dob, :label => "Date of Birth" %> <br>
+        <%= f.date_select :dob, as: :date, :order =>[:month, :day, :year], :start_year => 20.years.ago.year, :end_year => 5.years.ago.year %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :cell_phone, :label => "Participant's Cell Phone" %><br>
+        <%= f.text_field :cell_phone, as: :string, :class => "input-lg" %>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :email, :label => "Participant's Email" %><br>
+        <%= f.text_field :email, as: :string, :class => "input-lg email" %>
+      </div>
+    </div>
+  </div>
+
+  <br> 
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :pastparticipation, :label => "Please indicate number of years you have participated in Project CHUCK. If none, please enter 0." %><br>
+        <%= f.input_field :pastparticipation, collection: Student::PROJECTCHUCK_YEARS, prompt: "Please Select..." %>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :jersey_size %> <br>
+        <%= f.input_field :jersey_size, collection: Student::JERSEYSIZES, prompt: "Please Select..." %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class ="row">
+    <div class="col-xs-3 col-sm-3">
+      <div class="field">
+        <%= f.label :facebook %> <br>
+        <%= f.text_field :facebook, :class => "input-lg", :placeholder => "facebook.com/________" %>
+      </div>
+    </div>
+    <div class="col-xs-3 col-sm-3">
+      <div class="field">
+        <%= f.label :twitter %> <br>
+        <%= f.text_field :twitter, :class => "input-lg", :placeholder => "@__________" %>
+      </div>
+    </div>
+    <div class="col-xs-3 col-sm-3">
+      <div class="field">
+        <%= f.label :instagram %> <br>
+        <%= f.text_field :instagram, :class => "input-lg", :placeholder => "@__________" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :birth_certificate, :label => "Birth Certificate" %> <br>
+        <% if f.object.birth_certificate? %>
+        File has already been selected. To reupload, click the button below:
+        <%= f.file_field :birth_certificate %>
+        <% else %>
+        <%= f.file_field :birth_certificate, :label => "foo" %>
+        <%= f.hidden_field :birth_certificate_cache %>
+        <% end %>
+      </div>
+    </div> 
+  </div>
+
+  <br><hr>
+
+  <h3>School Information</h3>
+
+  <div class="row">
+   <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :school, :label => "Name of School" %><br>
+      <%= f.text_field :school, :class => "input-lg" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+   <div class="field">
+     <%= f.label :grade, :label => "Grade as of September, #{Time.now.year}" %> <br>
+     <%= f.input_field :grade, collection: Student::GRADESWITHK_ARRAY, prompt: "Please Select..." %>
+   </div>
+ </div>
+</div>
+
+<br>
+
+<div class="row">
+ <div class="col-xs-6 col-sm-6">
+  <div class="field">
+    <%= f.label :district, :label => "School District" %><br>
+    <%= f.input_field :district, collection: School::DISTRICT_ARRAY, prompt: "Please Select..." %>
+  </div>
+</div>
+<div class="col-xs-6 col-sm-6">
+  <div class="field">
+    <%= f.label :gpa, :label => "GPA" %><br>
+    <%= f.input_field :gpa, collection: Student::GPA_ARRAY, prompt: "Please Select..." %>
+  </div>
+</div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :report_card, :label => "Report Card" %> <br>
+      <% if f.object.report_card? %>
+      File has already been selected. To reupload, click the button below:
+      <%= f.file_field :report_card %>
+      <% else %>
+      <%= f.file_field :report_card, :label => "foo" %>
+      <%= f.hidden_field :report_card_cache %>
+      <% end %>
+    </div>
+  </div> 
+</div>
+
+<br><hr>
+
+<h3>Participant Insurance Information</h3>
+
+<div class ="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :insurance_provider, :label => "Name of Insurance Company" %> <br>
+      <%= f.text_field :insurance_provider, :class => "input-lg required" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :insurance_policy_no, :label => "Policy Number" %><br>
+      <%= f.text_field :insurance_policy_no, :class => "input-lg required" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class ="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :proof_of_insurance, :label => "Proof of Insurance" %> <br>
+      <% if f.object.proof_of_insurance? %>
+      File has already been selected. To reupload, click the button below:
+      <%= f.file_field :proof_of_insurance %>
+      <% else %>
+      <%= f.file_field :proof_of_insurance, :label => "foo" %>
+      <%= f.hidden_field :proof_of_insurance_cache %>
+      <% end %>
+    </div>
+  </div> 
+</div>
+
+<br> <hr>
+
+<h3>Participant Medical Information</h3>
+
+<div class="row">
+ <div class="col-xs-6 col-sm-6">
+   <div class="field">
+    <%= f.label :family_physician %><br>
+    <%= f.text_field :family_physician, :class => "input-lg required" %>
+  </div>
+</div>
+<div class="col-xs-6 col-sm-6">
+  <div class="field">
+    <%= f.label :physician_phone %><br>
+    <%= f.input_field :physician_phone, as: :string, :class => "input-lg phone" %>
+  </div>
+</div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :physical, :label => "Physical" %> <br>
+      <% if f.object.physical? %>
+      File has already been selected. To reupload, click the button below:
+      <%= f.file_field :physical %>
+      <% else %>
+      <%= f.file_field :physical, :label => "foo" %>
+      <%= f.hidden_field :physical_cache %>
+      <% end %>
+    </div>
+  </div> 
+  <div class="col-xs-4 col-sm-4">
+    <div class="field">
+      <%= f.label :physical_date %><br>
+      <%= f.date_select :physical_date, as: :date, :order =>[:month, :day, :year], :start_year => 10.years.ago.year, :end_year => Time.now.year %>
+    </div>
+  </div> 
+</div>
+
+
+
+<br><hr>
+
+<h3>Emergency Contact Information</h3>
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :emergency_contact_name, :label => "Full Name" %> <br>
+      <%= f.text_field :emergency_contact_name, :class => "input-lg required" %>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :emergency_contact_relation, :label => "Relation to Participant" %> <br>
+      <%= f.text_field :emergency_contact_relation, :class => "input-lg required", :placeholder => "Grandmother" %>
+    </div>
+  </div>
+
+  <br>
+
+</div>
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :emergency_contact_phone, :label => "Phone Number" %> <br>
+      <%= f.text_field :emergency_contact_phone, as: :string, :class => "input-lg required phone", :placeholder => "111-111-1111" %>
+    </div>
+  </div>
+</div>
+<br><hr>
+
+<h3>Medical and Insurance Information</h3>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :allergies %><br>
+      <%= f.input_field :allergies, as: :text, :class => "input-lg" %>
+    </div>
+  </div> 
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.label :medications %><br>
+      <%= f.input_field :medications, as: :text, :class => "input-lg" %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <p class="widthfit">Facts concerning the child's medical history including allergies, medications, and any physical impairment to which a physician should be alerted are listed below. I represent that the list below is current and accurate and includes all allergies. In case of an accident or illness, I hereby authorize a representative of Project C.H.U.C.K., a program of Best of the Batch Foundation, to use his/her judgment in obtaining immediate medical care. I give my consent for the administration of emergency medical treatment by an emergency medical team, licensed physician or hospital chosen by Best of the Batch Foundation. </p>
+  </div>
+  <div class="col-xs-12 col-sm-12">
+    <div class="field">
+      <%= f.check_box :parent_consent_agree %>
+      <%= f.label :parent_consent_agree, :label => "Parent/Guardian - Click to agree with the above" %> 
+      <!-- <div class="input-group">
+      <span class="input-group-addon">
+        <input type="checkbox" aria-label="...">
+      </span>
+      <label type="text" class="form-control" aria-label="Parent/Guardian - Click if you agree:"> 
+      </div> -->
+
+    </div>
+  </div> 
+</div>
+
+<br><hr>
+
+<h3>Promise</h3>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <p class="widthfit">I agree to take responsibility as a student-athlete to read my assigned book, attend study hall, and to review and follow all Best of the Batch Foundation and Project C.H.U.C.K. rules. (Click if you agree)</p>
+    <!-- <h3>Click to agree to the above statement</h3><br> -->
+  </div>
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.check_box :child_promise_agree %>
+      <%= f.label :child_promise_agree, :label => "Student Participant - Click to agree with the above" %> <br>
+    </div>
+  </div> 
+  <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%= f.check_box :parent_promise_agree %>
+      <%= f.label :parent_promise_agree, :label => "Parent/Guardian - Click to agree with the above" %> <br>
+    </div>
+  </div> 
+</div>
+
+<br><hr>
+
+<h3>Statement of Parental Responsibilities and Release</h3>
+
+<br>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <p class="widthfit">To participate in Project C.H.U.C.K. in consideration of the services to be performed by its sponsors, officers, and volunteers, I do hereby assume all the risks and hazards incidental to the conduct of the activities, and I do further hereby release, absolve, indemnify, and hold harmless Project C.H.U.C.K., operated and sponsored by Best of the Batch, its sponsors, officers, and volunteers of and from all manner of action and actions, cause or causes of action, suits, debts and sums of money, claims of demands whatsoever, in law or equity, arising out of or pursuant to the conduct of the activities. I am fully aware of risks inherent to this activity and should not participate or allow my child to participate unless medically able. I assume all risks associated with this activity. I also agree that photographs, recordings or any other record may be used for the purpose of promoting programs operated or sponsored by Best of the Batch. In case of accident or illness, I authorize a representative of Best of the Batch to obtain immediate care deemed necessary by licensed medical personnel. I have read and fully understand that these terms are contractual and are not a mere recital and sign it voluntarily, and hereby take responsibility for the above information and it is accurate to the best of my knowledge. I also understand that if not correct, my above-named child will be ineligible to play for the season.</p>
+  </div>
+  <div class="col-xs-12 col-sm-12">
+    <div class="field">
+      <%= f.check_box :parent_release_agree %>
+      <%= f.label :parent_release_agree, :label => "Parent/Guardian - Click to agree with the above" %> 
+    </div>
+  </div> 
+</div>
+
+<br><hr>
+
+<h3>Participant Signature</h3>
+
+<br>
+
+<div class="row">
+<!--   <div class="col-xs-6 col-sm-6">
+    <div class="field">
+      <%#= f.label :parent_signature, :label => "Parent - If you agree with the above, please sign:" %> <br>
+      <%#= f.text_field :parent_signature, :class => "input-lg" %>
+    </div>
+  </div>  -->
+  <div class="col-xs-12 col-sm-8">
+    <div class="field">
+      <%= f.label :child_signature, :label => "Student Participant - If you agree with the above, please type your name:" %> <br>
+      <%= f.text_field :child_signature, :class => "input-lg" %>
+    </div>
+  </div> 
+</div>
+
+<!-- unable to regenerate 2 signature pads when another student is added, so we're going to stick with just parent signature -->
+
+<!-- <div class="row">
+  <div class="col-xs-6 col-sm-6">
+   <div class="sigPad">
+    <p class="drawItDesc">* Parent: Sign Below</p>
+    <ul class="sigNav">
+      <li class="drawIt"></li>
+      <li class="clearButton"><a href="#clear">Clear</a></li>
+    </ul>
+    <div class="sig sigWrapper">
+      <div class="typed"></div>
+      <canvas class="pad" width="398" height="100"></canvas>
+      <input type="hidden" name="output" class="output">
+    </div>
+  </div>
+</div>
+<div class="col-xs-6 col-sm-6">
+  <div class="sigPad">
+    <p class="drawItDesc">* Student: Sign Below</p>
+    <ul class="sigNav">
+      <li class="drawIt"></li>
+      <li class="clearButton"><a href="#clear">Clear</a></li>
+    </ul>
+    <div class="sig sigWrapper">
+      <div class="typed"></div>
+      <canvas class="pad" width="398" height="100"></canvas>
+      <input type="hidden" name="output" class="output">
+    </div>
+  </div>
+</div>
+</div> -->
+
+<br>
+<hr class = "style-eight"> 
+<br>
+
+</div>
+
+      <!-- div class="col-sm-3">
+        <div class="field">
+          # f.label :household_id %><br>
+          <%#= f.collection_select :household_id, Household.all, :id, :id, prompt: "Select..." %>
+        </div>
+      </div> -->
+
+
+      <%#= f.input :first_name, input_html: {class: "input-lg"} %>
+      <%#= f.input :last_name, input_html: {class: "avg"} %>
+      <%#= f.input :gender, input_html: {class: "avg"} %>
+      <%#= f.input :dob, input_html: {class: "avg"} %>
+      <%#= f.input :grade, input_html: {class: "avg"} %>
+      <%#= f.input :cell_phone, input_html: {class: "avg"} %>
+      <%#= f.input :email, input_html: {class: "avg"} %>
+      <%#= f.input :emergency_contact_name, input_html: {class: "avg"} %>
+      <%#= f.input :emergency_contact_phone, input_html: {class: "avg"} %>
+      <%#= f.input :allergies, input_html: {class: "avg"} %>
+      <%#= f.input :medications, input_html: {class: "avg"} %>
+      <%#= f.input :school_id, input_html: {class: "avg"} %>
+
+
+
+<!--     <legend>Registration Details</legend>
+    <%#= f.simple_fields_for :registrations do |registration_form| %>
+      <%#= render :partial => "registration_fields", :locals => { :f => registration_form } %>
+      <%# end %>  -->

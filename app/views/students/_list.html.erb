@@ -1,0 +1,92 @@
+ <div id="filterrific_results"> 
+  <div class="container well">
+  <table class="table">
+   <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Grade</th>
+      <!-- <th>Team</th> -->
+      <!-- <th>Student Cell phone</th> -->
+      <th>Home phone</th>
+      <th>Allergies</th>
+      <th>Medications</th>
+      <th>Cleared?</th>
+      
+      <% if logged_in? and current_user.role == "admin" %>
+      <th>Active?</th>
+        <th></th>
+        <th></th>
+      <% end %>
+    </tr>
+  </thead> 
+
+  <% my_students = [] %>
+  <% if logged_in? && current_user.role == "guardian" %>
+    <% my_houses = [].push(current_user.guardian.household) %>
+    <% for house in my_houses %>
+      <% studs = house.students.to_a %>
+      <% studs.each {|s| my_students.push(s.id)} %>
+    <% end %>
+  <% end %>
+
+
+  <tbody>
+   <% @students.each do |student| %>
+   <%# if my_students != [] %>
+    <%# if logged_in? && current_user.role == "guardian" && not(my_students.include?(student.id)) %>
+      <%# next %>
+    <%# end %>
+  <%# end %>
+   
+   <tr>
+    <% if student.gender == "male"%>
+    <td class="boy"><%= link_to student.proper_name, student %></td>
+    <%else%>
+    <td class="girl"><%= link_to student.proper_name, student %></td>
+    <%end%> 
+    <td><%= student.age %></td>
+    <td>
+      <% if student.grade == 0 %>
+        <%= "K" %>
+      <%else%>
+        <%= student.grade %>
+      <%end%>
+    </td>
+    <!-- <td><%#= student.team.name unless student.team.name.nil?%></td> -->
+    <!-- <td width="40"><%# number_to_phone student.cell_phone %></td> -->
+    <td><%= number_to_phone student.household.home_phone %></td>
+    <td width="40"><%= student.allergies %></td>
+    <td width="40"><%= student.medications %></td> 
+        <td>
+         <% if (student.rc_checkoff) && (student.poi_checkoff) && (student.phy_checkoff) && (student.bc_checkoff) %>
+         <%= link_to(image_tag('check16.png')) %> 
+         <%else%>
+         <%= link_to(image_tag('missing16.png')) %> 
+         <%end%>
+        </td>
+        <% if logged_in? and current_user.role == "admin" %>
+         <td>
+        <% deact = "" %>
+         <% if (student.active) %>
+         <%= link_to(image_tag('check16.png')) %> 
+         <% deact = "Deactivate" %>
+         <%else%>
+         <%= link_to(image_tag('missing16.png')) %> 
+          <% deact = "Activate" %>
+         <%end%>
+        </td>
+    <td><%= link_to(image_tag('edit.png'), edit_student_path(student)) %></td>
+    <td><%= link_to(deact, change_active_student_path(student), method: :put, data: { confirm: 'Are you sure you?' }) %></td>
+    <td><%= link_to(image_tag('delete.png'), student, method: :delete, data: { confirm: 'Are you sure you want to DELETE the student?' }) %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</tbody>
+</table>
+
+<% if logged_in? and current_user.role? :admin %>
+  <span class="paginate">
+      <%= will_paginate @students, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+  </span>
+<% end %>

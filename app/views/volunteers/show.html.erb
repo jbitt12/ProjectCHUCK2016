@@ -1,0 +1,122 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-sm-6">
+<p>
+  <h2><strong><%= @volunteer.proper_name %></strong></h2>
+
+  <%= link_to(image_tag('edit.png'), edit_volunteer_path(@volunteer)) %> Edit Volunteer Info |
+  <%= link_to(image_tag('edit.png'), edit_user_path(@volunteer.user)) %> Edit User Info | 
+  <%= link_to(image_tag('back16.png'), volunteers_path) %> Back <br><br>
+
+  <strong>Role:</strong> <%= @volunteer.role %> <br>
+
+<% if @volunteer.role == "Coach" %> 
+  <p>
+  <strong>Team:</strong>
+  <% if @volunteer.team.nil?# and logged_in? and current_user.role == "admin" %>
+  Not Assigned
+  <% else %>
+    <%= @volunteer.team.name %>
+  <% end %>
+<% end %>
+</p>
+
+<strong>Volunteer Signature:</strong> <%= link_to "Click here", @volunteer.volunteer_sign.url, :target => '_blank' %> <br>
+
+<h3>Address</h3>
+
+<% if (@volunteer.street==nil && @volunteer.city==nil && @volunteer.state==nil && @volunteer.zip==nil) %> 
+  <p>
+    <strong>Not Provided</strong>
+  </p>
+<% else %>
+  <p>
+    <%= @volunteer.street %><br>
+    <%= @volunteer.city %>, <%= @volunteer.state %>, <%= @volunteer.zip %>
+  </p>
+<% end %>
+
+<h3>Contact Information</h3>
+<p>
+	<strong>Day Phone:</strong>
+  		<%= number_to_phone @volunteer.day_phone %><br>
+
+  	<strong>Cell Phone:</strong>
+  		<%= number_to_phone @volunteer.cell_phone %> <br>
+
+  	<strong>Receives text messages:</strong>
+  		<% if @volunteer.receives_text_msgs==true %>
+    		<%=link_to image_tag("check16.png")%>
+    	<% else %>
+    		<%=link_to image_tag("missing16.png")%>
+    	<% end %>
+    <br>
+  	<strong>Email:</strong>
+  		<%= @volunteer.email %>
+</p>
+
+
+<h3>Project CHUCK Experience</h3>
+<p>
+	<strong>Been with Project CHUCK for </strong> <%= @volunteer.years_with_proj_chuck %> years<br>
+	<strong>Position:</strong>
+		<%= @volunteer.position %><br>
+	<strong>Team Coached:</strong>
+		<%= @volunteer.team_coached %><br>
+	<strong>If your child is playing, what is his/her name?</strong>
+		<%= @volunteer.child_name %><br>
+	<strong>Shirt Size:</strong>
+		<%= @volunteer.shirt_size %><br>
+	<strong>Has all clearances:</strong>
+  		<% if (@volunteer.act33_clearance==true && @volunteer.act34_clearance==true && @volunteer.act153_clearance==true) %>
+    		<%=link_to image_tag("check16.png")%>
+    	<% else %>
+    		<%=link_to image_tag("missing16.png")%>
+    	<% end %>
+</p>
+
+<h3>Availability and Feedback</h3>
+<p>
+	<strong>Days Not Available:</strong>
+		<%= @volunteer.not_available %><br>
+	<strong>What are two important skills you want to focus on in this year’s camp?</strong>
+		<%= @volunteer.two_skills %><br>
+	<strong>What suggestions would you have to improve this year’s camp if you volunteered last year?</strong>
+		<%= @volunteer.suggestions %><br>
+</p><br>
+</div>
+  <% if logged_in? and current_user.role == "admin" %>
+    <% if @volunteer.team.nil? %>
+      <center><h3>Assign Coach To Team</h3></center>
+    <% else %>
+      <center><h3>Assign Coach To New Team</h3></center>
+    <% end %>
+  <div class="col-sm-6 fixedheight">
+      <table class="table table-bordered">
+   <thead>
+    <tr>
+      <th>Team</th>
+      <th>Assign?</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if not(@volunteer.team.nil?) %>
+      <tr>
+        <td><%= "Remove From Team" %></td>
+        <td><%= link_to "Remove", send_remove_volunteer_path(@volunteer) %></td>
+      </tr>
+    <% end %>
+   <% @teams.each do |team| %>
+     <tr>
+      <td><%= team.name %></td>
+      <td><%= link_to "Assign", vol_assign_coach_path(team,@volunteer) %></td>
+    </tr>
+  <% end %>
+</tbody>
+</table>
+<% end %>
+  </div>
+
+</div>

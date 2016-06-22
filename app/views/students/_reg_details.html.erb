@@ -1,0 +1,41 @@
+<center><h2>Current Registration</h2></center>
+
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Bracket</th>
+      <th>Active</th>
+      <% if logged_in? and not(current_user.role? :volunteer) %>
+      <th></th>
+      <th></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @registrations.active.each do |registration| %>
+      <tr>
+        <td><%= link_to(image_tag('expand24.png'), registration) %></td>
+        <!-- <td><%= registration.student.proper_name %></td> -->
+        <!-- <td><%= registration.id %></td> -->
+        <td><%= registration.bracket.gender + " " + registration.bracket.min_age.to_s + "-" + registration.bracket.max_age.to_s %></td>
+        <td>
+         <% if registration.active == true %>
+         <%= link_to(image_tag('check16.png')) %> 
+         <%else%>
+         <%= link_to(image_tag('missing16.png')) %> 
+         <%end%>
+        </td>
+
+        <!-- <td><%#= link_to 'Show', registration %></td> -->
+        <% if logged_in? and not(current_user.role? :volunteer) %>
+        <td><%= link_to(image_tag('edit.png'), edit_registration_path(registration)) %></td>
+        <td><%= link_to(image_tag('delete.png'), registration, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

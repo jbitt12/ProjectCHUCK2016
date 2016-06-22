@@ -1,0 +1,340 @@
+<!-- <center><h2>Add New Student</h2></center> <br> -->
+<div class="row">
+
+  <div class="col-xs-6 col-sm-6">
+
+    <div class="row">
+
+      <div class="col-sm-12">
+        <% if @student.gender=="male" %>
+        <%=link_to image_tag("maleuser64.png")%>
+        <% else %>
+        <%=link_to image_tag("femaleuser64.png")%>
+        <% end %>
+      </div>
+    </div>
+    <% if logged_in? and not(current_user.role? :volunteer) %>
+    <div class="row">
+      <div class="col-sm-12">
+        <h1> <%= @student.proper_name %></h1>
+        <%= link_to(image_tag('edit.png'), edit_student_path(@student)) %> Edit | 
+        <%= link_to(image_tag('back16.png'), students_path) %> Back
+      </div>
+    </div>
+    <% end %>
+
+    <br>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Team:</strong>
+          <% if @student.on_team? %>
+            <%= link_to @student.roster_spots.active[0].team.name, @student.roster_spots.active[0].team %>
+          <% else %>
+            <%= "Not Currently Assigned" %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Household:</strong>
+          <%= (logged_in? and not(current_user.role? :volunteer)) ? link_to(@student.last_name, @student.household) : @student.last_name %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Age:</strong>
+          <%= @student.age %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Date of Birth:</strong>
+          <%= @student.dob.strftime("%m/%d/%Y") %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <% if !(@student.pastparticipation.nil?)  %>
+          <strong>Been with Project CHUCK for </strong> 
+          <%= @student.pastparticipation %> years
+          <% else %>
+          <p>First year with Project CHUCK</p>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Active:</strong>
+          <% if @student.active %>
+          <%= link_to (image_tag('check16.png')) %> 
+          <%else%>
+          <%= link_to (image_tag('missing16.png')) %> 
+          <%end%>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Report Card:</strong>
+          <% if @student.rc_checkoff %>
+          Checked off
+              <% if logged_in? && current_user.role == "admin" %>
+                  - <%= link_to "View", report_card_view_student_path(@student) %>
+                  - <%= link_to "(Reset)", report_card_reset_student_path(@student) %>
+              <% end %>
+          <% else %>
+              <% if @student.has_report_card == false %>
+              No Report Card Submitted
+              <% elsif logged_in? and current_user.role == "admin" %>
+              <%= link_to "Checkoff", report_card_student_path(@student) %>
+              <% else %>
+              Pending Approval
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Birth Certificate:</strong>
+          <% if @student.bc_checkoff %>
+          Checked off
+              <% if logged_in? && current_user.role == "admin" %>
+                  - <%= link_to "(Reset)", birth_certificate_reset_student_path(@student) %>
+              <% end %>
+          <% else %>
+              <% if @student.has_birth_certificate == false %>
+              No Birth Certificate Submitted
+              <% elsif logged_in? and current_user.role == "admin" %>
+              <%= link_to "Checkoff", birth_certificate_student_path(@student) %>
+              <% else %>
+              Pending Approval
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Proof of Insurance:</strong>
+          <% if @student.poi_checkoff %>
+          Checked off
+              <% if logged_in? && current_user.role == "admin" %>
+                  - <%= link_to "(Reset)", proof_of_insurance_reset_student_path(@student) %>
+              <% end %>
+          <% else %>
+              <% if @student.has_proof_of_insurance == false %>
+              No Proof of Insurance Submitted
+              <% elsif logged_in? and current_user.role == "admin" %>
+              <%= link_to "Checkoff", proof_of_insurance_student_path(@student) %>
+              <% else %>
+              Pending Approval
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Physical:</strong>
+          <% if @student.phy_checkoff %>
+          Checked off
+              <% if logged_in? && current_user.role == "admin" %>
+                  - <%= link_to "View", physical_view_student_path(@student) %>
+                  - <%= link_to "(Reset)", physical_reset_student_path(@student) %>
+              <% end %>
+          <% else %>
+              <% if @student.has_physical == false %>
+              No Physical Submitted
+              <% elsif logged_in? and current_user.role == "admin" %>
+              <%= link_to "Checkoff", physical_student_path(@student) %>
+              <% else %>
+              Pending Approval
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Parent Signature:</strong>
+          <%= (logged_in? and current_user.role == "admin") ? link_to("Click here", @student.parent_signature.url, :target => '_blank') : "Signed" %>
+        </p>
+      </div>
+    </div>
+<% if logged_in? and not(current_user.role? :volunteer) %>
+    <h3>School Information</h3>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Grade:</strong>
+          <%= @student.grade %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>School:</strong>
+          <%= @student.school %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>District:</strong>
+          <%= @student.district %>
+        </p>
+      </div>
+    </div>
+    <% end %>
+
+    <h3>Contact Information</h3>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Cell phone:</strong>
+          <%= number_to_phone @student.cell_phone %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Email:</strong>
+          <%= @student.email %>
+        </p>
+      </div>
+    </div>
+
+    <h3>Medical Information</h3>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Emergency contact name:</strong>
+          <%= @student.emergency_contact_name %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Emergency contact phone:</strong>
+          <%= number_to_phone @student.emergency_contact_phone %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          <strong>Allergies:</strong>
+          <%= @student.allergies.nil? ? "N/A" : @student.allergies %>
+        </p>
+      </div>
+    </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <p>
+            <strong>Medications:</strong>
+            <%= @student.medications.nil? ? "N/A" : @student.medications %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+      <div class="col-xs-6 col-sm-6">
+        <div class = "row">
+          <% if logged_in? and current_user.role == "admin" %>
+            <% if @student.roster_spots.active.to_a.length == 0 %>
+              <center><h3>Assign Student To Team</h3></center>
+            <% else %>
+              <center><h3>Assign Student To New Team</h3></center>
+            <% end %>
+            <div class="fixedheight">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Team</th>
+                    <th>Assign?</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                <% if @student.roster_spots.active.length > 0 %>
+                  <tr>
+                    <td><%= "Remove From Team" %></td>
+                    <td><%= link_to "Remove", send_remove_student_path(@student) %></td>
+                  </tr>
+                <% end %>
+                <% @teams.each do |team| %>
+                  <tr>
+                    <td><%= team.name %></td>
+                    <td><%= link_to "Assign", stu_send_assign_student_path(team,@student) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <%= render :partial => 'docs' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <%= render :partial => 'reg_details' %>
+          </div>
+        </div>
+        <% if logged_in? and not(current_user.role? :volunteer) %>
+        <div class="row">
+          <div class="col-sm-12">
+            <%= render :partial =>  'household_details' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <%= render :partial => 'guardian_details' %>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+

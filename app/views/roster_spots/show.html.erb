@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Team:</strong>
+  <%= @roster_spot.team.name %>
+</p>
+
+<p>
+  <strong>Student:</strong>
+  <%= @roster_spot.student.proper_name %>
+</p>
+
+<p>
+  <strong>Jersey Number:</strong>
+  <%= @roster_spot.jersey_number %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @roster_spot.active? %>
+</p>
+
+<%= link_to 'Edit', edit_roster_spot_path(@roster_spot) %> |
+<%= link_to 'Back', roster_spots_path %>

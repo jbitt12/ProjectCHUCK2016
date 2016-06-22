@@ -1,0 +1,53 @@
+<hr>
+<div class="container">
+    <div class="row">
+    <div class="col-xs-12 col-sm-8">
+    </div>
+    <div class="col-xs-12 col-sm-4">
+    <%= f.link_to_remove("X Remove guardian", :class => "btn removelink") %> 
+  </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :first_name %> <br>
+        <%= f.text_field :first_name, :class => "input-lg required" %>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :last_name %> <br>
+        <%= f.text_field :last_name, :class => "input-lg required"%>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :cell_phone, :label => "Best Contact Number" %><br>
+        <%= f.text_field :cell_phone, as: :string, :class => "input-lg phone required" %>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :email %><br>
+        <%= f.input_field :email, as: :string, :class => "input-lg email" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :receives_text_msgs, :label => "Do You Want To Receive Text Messages?" %><br>
+        <%= f.input_field :receives_text_msgs, as: :radio_buttons, :class => "input-lg" %>
+      </div>
+    </div>
+  </div>
+</div>

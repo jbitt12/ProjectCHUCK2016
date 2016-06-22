@@ -1,0 +1,36 @@
+<div class="container well">
+  <center><h1>Games</h1>
+  <%= link_to 'New Game', new_game_path %></center>
+
+  <br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Team 1</th>
+      <th>Team 2</th>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @games.each do |game| %>
+      <tr>
+        <% game.team_games.each do |tg| %>
+           <td><%= link_to tg.team.name, tg.team %></td>
+        <% end %>
+        <td><%= link_to game.date.strftime("%B %d at %I:%M %P"), game %></td>
+        <td><%= link_to(image_tag('edit.png'), edit_game_path(game)) %></td>
+        <td><%= link_to(image_tag('delete.png'), game, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="paginate">
+<%= will_paginate @games, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>
+
+</div>

@@ -1,0 +1,53 @@
+<div class="container well">
+<center><h1>Households</h1>
+<%= link_to 'New Household', new_household_path %></center>
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Street</th>
+      <th>County</th>
+      <!-- <th>City</th>
+      <th>State</th>
+      <th>Zip</th> -->
+      <th>Home phone</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <% my_houses = [] %>
+  <% if logged_in? && current_user.role == "guardian" %>
+    <% my_houses = [].push(current_user.guardian.household.id) %>
+    <%# my_houses.sdf %>
+  <% end %>
+
+  <tbody>
+    <% @households.each do |household| %>
+    <%# if my_houses != [] %>
+      <% if logged_in? && current_user.role == "guardian" && not(my_houses.include? household.id) %>
+        <% next %>
+      <% end %>
+    <%# end %>
+
+      <tr>
+        <td><%= link_to household.street, household %></td>
+        <td><%= household.county %></td>
+        <!-- <td><%= household.city %></td>
+        <td><%= household.state %></td>
+        <td><%= household.zip %></td> -->
+        <td><%= household.home_phone %></td>
+        <!-- <td><%#= link_to 'Show', household %></td> -->
+        <td><%= link_to(image_tag('edit.png'), edit_household_path(household)) %></td>
+        <td><%= link_to(image_tag('delete.png'), household, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="paginate">
+<%= will_paginate @households, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>
+
+</div>

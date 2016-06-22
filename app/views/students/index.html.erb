@@ -1,0 +1,60 @@
+<center>
+  <% if logged_in? and current_user.role? :admin %>
+    <h1>Students</h1>
+    <%= link_to "Add a student", new_student_path %>
+  <% elsif logged_in? and current_user.role? :guaridan %>
+    <h1>My Students</h1>
+  <% elsif logged_in? and current_user.role? :volunteer %>
+    <h1><%= current_user.volunteer.team.nil? ? "Not Yet Assigned" : current_user.volunteer.team.name %></h1>
+  <% else %>
+    <h1>Students</h1>
+  <% end %>
+</center>
+<br>
+
+<%#
+  Filterrific adds the `form_for_filterrific` view helper:
+  * adds dom id 'filterrific_filter'
+  * applies javascript behaviors:
+      * AJAX form submission on change
+      * AJAX spinner while AJAX request is being processed
+  * sets form_for options like :url, :method and input name prefix
+%>
+<div class = "row">
+  <div class = "col-sm-3">
+  </div>
+  <div class = "col-sm-6"><center>
+    <% if logged_in? and current_user.role? :admin %>
+<%= form_for_filterrific @filterrific do |f| %>
+  <div>
+    Search
+    <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
+    <%= f.text_field(
+      :search_query,
+      class: 'filterrific-periodically-observed'
+    ) %>
+  </div>
+  <div>
+    Sorted/Filtered by
+    <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by]) %>
+  </div>
+  <div>
+    <%= link_to(
+      'Reset filters',
+      reset_filterrific_url,
+    ) %>
+  </div>
+  <%# add an automated spinner to your form when the list is refreshed %>
+  <%= render_filterrific_spinner %>
+  <% end %>
+<% end %>
+</center>
+</div>
+<div class = "col-sm-3">
+  </div>
+</div>
+
+<%= render(
+  partial: 'students/list',
+  locals: { students: @students }
+) %>

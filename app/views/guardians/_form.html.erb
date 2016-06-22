@@ -1,0 +1,88 @@
+<%= simple_form_for(@guardian) do |f| %>
+<% if @guardian.errors.any? or @guardian.user.errors.any? or @guardian.household.errors.any?%>
+<div id="error_explanation">
+  <h2><%= pluralize(@guardian.errors.count + @guardian.user.errors.count + @guardian.household.errors.count, "error") %> prohibited this guardian from being saved:</h2>
+
+  <ul>
+    <% @guardian.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+    <% @guardian.user.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+    <% @guardian.household.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="container well">
+  <%= render :partial => 'partials/instructions' %>
+  <% if controller.action_name=="new" or (logged_in? and current_user.role? :admin) or controller.action_name=="create" %>
+  <%= f.simple_fields_for :user do |user_form| %>
+  <%= render :partial => "user_fields", :locals => { :f => user_form } %>
+  <% end %>
+  <br><hr><br>
+  <% end %>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :first_name %> <br>
+        <%= f.input_field :first_name, :class => "input-lg" %>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :last_name %> <br>
+        <%= f.input_field :last_name, :class => "input-lg"%>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :cell_phone, :label => "Best Contact Number" %><br>
+        <%= f.input_field :cell_phone, as: :string, :class => "input-lg" %>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-6">
+      <div class="field">
+        <%= f.label :email %><br>
+        <%= f.input_field :email, as: :string, :class => "input-lg" %>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <div class="field">
+        <%= f.label :receives_text_msgs, :label => "Do You Want To Receive Text Messages?" %> <br>
+        <%= f.input_field :receives_text_msgs, collection: [['Yes', true],['No',false]], as: :radio_buttons, :class => "input-lg" %>
+      </div>
+    </div>
+  </div>
+  <% if controller.action_name=="new" or (logged_in? and current_user.role? :admin) or controller.action_name=="create" %>
+  <br><hr><br>
+  <%= f.simple_fields_for :household do |household_form| %>
+  <% render :partial => "household_fields", :locals => { :f => household_form } %>
+  <% end %>
+  <% end %>
+</div>
+<div class = "row">
+      <div class="col-sm-6">
+      <% if controller.action_name=="edit" or controller.action_name == "update" %>
+      <%= f.submit "Update", :class => 'btn btn-success' %>
+      <% else %>
+      <%= f.submit "Create", :class => 'btn btn-success' %>
+      <% end %>
+    </div>
+    <div class="col-sm-6">
+       <%# if controller.action_name=="edit" || controller.action_name=="new"%>
+      <%= link_to 'Cancel', home_path, :class => 'btn btn-danger' %>
+      <%# end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,104 @@
+<%= simple_form_for(@team) do |f| %>
+<% if @team.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:</h2>
+
+  <ul>
+    <% @team.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<div class="container well">
+  <div class="row">
+    <div class="col-sm-12">
+      <center>
+      <h2>Team Information</h2>
+      <div class="row">
+      <div class="col-sm-3">
+      <div class="field">
+        <%= f.label "Bracket" %><br>
+        <%= f.input_field :bracket_id, collection: Bracket.all.alphabetical, prompt: "Select bracket..." , :class => "input-lg" %>
+      </div>
+      </div>
+      <div class="col-sm-6">
+      <div class="field">
+        <%= f.label "Team Name" %><br>
+        <%= f.input_field :name, :class => "input-lg" %>
+      </div>
+      </div>
+      <div class="col-sm-3">
+      <div class="field">
+        <%= f.label "Max students allowed" %><br>
+        <%= f.input_field :max_students, :class => "input-lg" %>
+      </div>
+      </div>
+      </div>
+      <!-- <div class="field">
+        <%= f.label "Number of wins" %><br>
+        <%= f.input_field :num_wins, :class => "input-lg" %>
+      </div>
+      <div class="field">
+        <%= f.label "Number of losses" %><br>
+        <%= f.input_field :num_losses, :class => "input-lg" %>
+      </div> -->
+    </center>
+    </div>
+
+    <!-- <div class="studentchoice col-sm-4">
+      <h2>Add Eligible Students</h2>
+      <div class="fixedheight">
+        <% if controller.action_name=="edit" || controller.action_name=="new" || controller.action_name=="update"%>
+
+        <% s = Registration.by_bracket(@team.bracket_id).map { |i| i.student_id } %>
+        <% eligible_students  = [] %>
+
+        <% Student.active.each do |student| %>
+            <% if s.include?(student.id) %>
+              <% eligible_students << student%>
+            <% end %>
+          <% rs = student.roster_spots %>
+          <% rs.each do |spot| %>
+            <% if spot.active && spot.team_id != @team.id %>
+              <% eligible_students.delete(student)%>
+            <% end %> 
+          <%end %> 
+        <%end %> 
+
+        <%# f.input :student_ids, label: "", collection: eligible_students, as: :check_boxes %>
+
+        <% end %>
+      </div>
+    </div> -->
+
+    <!-- <div class="col-sm-4">
+      <h2>Add Coaches</h2>
+      <div class="field">
+        <% if controller.action_name=="edit" || controller.action_name=="new" || controller.action_name=="update"%>
+        NOTE: volunteer_id no longer exists in the system
+        <%# f.input :volunteer_ids, label: "", collection: Volunteer.alphabetical.by_role("Coach"), as: :check_boxes %>
+        <% end %>
+      </div>
+    </div> -->
+
+    <br>
+
+  </div>
+</div>
+<div class = "row">
+  <div class="actions">
+    <div class="col-sm-6">
+      <% if controller.action_name=="edit" %>
+        <%= f.submit "Update", :class => 'btn btn-primary' %>
+      <% else %>
+        <%= f.submit "Create", :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+    <div class="col-sm-6">
+      <%= link_to 'Back', teams_path, :class => 'btn btn-primary' %>
+    </div>
+  </div>
+  <% end %>
+</div>
+
