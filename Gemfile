@@ -48,6 +48,8 @@ gem 'rmagick', '2.13.2', :require => 'RMagick'
 # gem 'fog', '0.9.0'
 gem 'fog', '1.3.1'
 
+#gem 'nokogiri', '~> 1.5', '>= 1.5.11'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -68,6 +70,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'single_test'
 end
 
 # Gems used only in testing

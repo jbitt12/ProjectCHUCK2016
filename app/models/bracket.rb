@@ -7,9 +7,9 @@ class Bracket < ActiveRecord::Base
 include Activeable
 
   #Callbacks
-  before_validation :checkTournamentActive, on: :create
-  before_save :setName
-  after_save :bracketActive
+  before_validation :valid_tournament_id, on: :create
+  before_save :set_name
+  after_save :bracket_active
 
   #Relationships 
   has_many :teams
@@ -25,7 +25,6 @@ include Activeable
   validates_presence_of :gender, :max_students, :min_age, :max_age
   validates_numericality_of :max_students, :min_age, :max_age
   validate :minlessmax
-  validate :valid_tournament_id
 
   # Scopes
   scope :alphabetical, -> { order('gender, min_age') }
@@ -40,31 +39,14 @@ include Activeable
   scope :full, -> { where("max_students = ? ", num_registered) }
   scope :not_full, -> { where("max_students > ?", num_registered) }
 
-  #Methods
-  def get_teams
-  	return self.teams.to_a
-  end
-
-
-
   private 
   #Custom validations
 
-  def checkTournamentActive
-    if self.tournament.active == true
-      self.active = true
-    else
-      self.active = false
-      true
-      #^without this, it fails the before_validation check
-    end
+  def set_name
+    self.name = "#{self.gender.camelize}: #{self.min_age}-#{self.max_age}"
   end
 
-  def setName
-   self.name = "#{self.gender.camelize}: #{self.min_age}-#{self.max_age}"
-  end
-
-  def bracketActive
+  def bracket_active
     if (self.active == false)
       regs = Registration.where('bracket_id = ?', self.id)
       regs.each do |reg|
@@ -75,20 +57,18 @@ include Activeable
   end
 
   def minlessmax
-  	return self.min_age < self.max_age 
+    return self.min_age <= self.max_age 
   end
 
-  #tournament id must exist in the system
-  #AND end_date of that tournament is null 
-  #i.e. tounament is active
+  # be associated with active tournament
   def valid_tournament_id
-  	all_tournaments = Tournament.all.to_a.map{|u| u.id}
-  	return all_tournaments.include?(self.tournament.id) && self.tournament.end_date.nil?
+    all_tournaments = Tournament.all.active.to_a.map{|u| u.id}
+    return all_tournaments.include?(self.tournament.id)
   end
 
   #HELPER FUNCTIONS
   def num_registered
-	return self.registrations.to_a.length
+    return self.registrations.to_a.length
   end 
 
 end

@@ -6,7 +6,7 @@ include Activeable
   has_many :brackets
 
   #Callbacks
-  before_save :tourneyActive, on: [:create, :update]
+  before_save :tourney_active, on: [:create, :update]
 
   #Validations
   validates_presence_of :name, :start_date
@@ -20,12 +20,7 @@ include Activeable
   scope :upcoming, -> { where("start_date > ?", Date.today) }
 
   #Other Methods
-  def is_active?
-    return true if end_date.nil?
-    (start_date <= Date.today) && (end_date >= Date.today)
-  end
-
-  def tourneyActive
+  def tourney_active
     if !(end_date.nil?) && (end_date < Date.today)
       self.active = false
       brackets = Bracket.where('tournament_id = ?', self.id)
