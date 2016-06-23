@@ -2,21 +2,21 @@ module Contexts
   module TeamGames
 
     def create_team_games
-      @bt1_bar = FactoryGirl.create(:team_game, team: @boy_1, game: @bar_cur, score: 100)
-      @bt2_bar = FactoryGirl.create(:team_game, team: @boy_2, game: @bar_cur, score: 98)
-      @bt1_td = FactoryGirl.create(:team_game, team: @boy_1, game: @td_cur, score: 80)
-      @bt2_td = FactoryGirl.create(:team_game, team: @boy_2, game: @td_cur, score: 91)
-      @gt1_msg = FactoryGirl.create(:team_game, team: @girl_1, game: @msg_cur, score: 93)
-      @gt2_msg = FactoryGirl.create(:team_game, team: @girl_2, game: @msg_cur, score: 90)
+      @cavs_upcoming = FactoryGirl.create(:team_game, team: @boy_cavs, game: @upcoming_game)
+      @wars_upcoming = FactoryGirl.create(:team_game, team: @boy_wars, game: @upcoming_game)
+      @cavs_past = FactoryGirl.create(:team_game, team: @boy_cavs, game: @past_game, score: 94)
+      @wars_past = FactoryGirl.create(:team_game, team: @boy_wars, game: @past_game, score: 91)
+      @thunder_current = FactoryGirl.create(:team_game, team: @girl_thunder, game: @current_game, score: 93)
+      @hawks_current = FactoryGirl.create(:team_game, team: @girl_hawks, game: @current_game, score: 90)
     end
 
     def remove_team_games
-      @bt1_bar.destroy
-      @bt2_bar.destroy
-      @bt1_td.destroy
-      @bt2_td.destroy
-      @gt1_msg.destroy
-      @gt2_msg.destroy
+      @cavs_upcoming.destroy
+      @wars_upcoming.destroy
+      @cavs_past.destroy
+      @wars_past.destroy
+      @thunder_current.destroy
+      @hawks_current.destroy
     end
 
   end

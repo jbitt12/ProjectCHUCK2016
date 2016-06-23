@@ -18,8 +18,8 @@ module Contexts
   # explicitly include all sets of contexts used for testing
   include Contexts::Tournaments
   include Contexts::Brackets
-  include Contexts::Games
   include Contexts::Teams
+  include Contexts::Games
   include Contexts::Volunteers
   include Contexts::Users
   include Contexts::TeamGames

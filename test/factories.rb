@@ -17,17 +17,17 @@ FactoryGirl.define do
     name "Boys 7-10"
     active true
   end
-
-  factory :games do
-    date Date.today
-  end
-
+  
   factory :team do
     association :bracket
     name "Steelers"
     max_students 10
     num_wins 0
     num_losses 0
+  end
+
+  factory :games do
+    date Date.today
   end
 
   factory :volunteer do
@@ -80,7 +80,7 @@ FactoryGirl.define do
   factory :team_game do
     association :game
     association :team
-    score 0
+    score nil
   end
 
   factory :school do

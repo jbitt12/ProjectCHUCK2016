@@ -13,7 +13,7 @@ class TournamentTest < ActiveSupport::TestCase
 
   should allow_value(15.years.ago.to_date).for(:start_date)
   should allow_value(2.days.ago.to_date).for(:start_date)
-  should_not allow_value(Date.current).for(:start_date)
+  should allow_value(Date.current).for(:start_date)
   should allow_value(1.day.from_now.to_date).for(:start_date)
   should_not allow_value("bad").for(:start_date)
   should_not allow_value(2).for(:start_date)
