@@ -53,8 +53,8 @@ class BracketTest < ActiveSupport::TestCase
     # Setup Check
 
     should "show that all factories are properly created" do
-      assert_equal "Boys 7-10", @current_male_bracket.name
-      assert_equal "Girls 7-10", @current_female_bracket.name
+      assert_equal "Male: 7-10", @current_male_bracket.name
+      assert_equal "Female: 7-10", @current_female_bracket.name
     end
 
    # Callbacks
@@ -77,20 +77,20 @@ class BracketTest < ActiveSupport::TestCase
   # Scopes
 
   should "show alphabetically" do
-    assert_equal ["Boys 7-10", "Girls 7-10"], Bracket.active.map{ |b| b.name }
+    assert_equal ["Male: 7-10", "Female: 7-10"], Bracket.active.map{ |b| b.name }
   end
 
   should "show male brackets" do
-    assert_equal ["Boys 7-10"], Bracket.male.map{ |b| b.name }
+    assert_equal ["Male: 7-10"], Bracket.male.map{ |b| b.name }
   end
 
   should "show male brackets" do
-    assert_equal ["Girls 7-10"], Bracket.female.map{ |b| b.name }
+    assert_equal ["Female: 7-10"], Bracket.female.map{ |b| b.name }
   end 
 
   # Methods
   should "show set name" do
-    assert_equal "Boys 7-10", @current_male_bracket.set_name
+    assert_equal "Male: 7-10", @current_male_bracket.set_name
   end
 
   # TODO: Once registration contexts built... test scopes full, not_full, and method num_registered and bracket_active

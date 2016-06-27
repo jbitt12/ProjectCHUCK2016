@@ -45,16 +45,14 @@ ActiveRecord::Schema.define(version: 20160622182123) do
   create_table "guardians", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.integer  "household_id"
     t.string   "email"
     t.string   "cell_phone"
     t.boolean  "receives_text_msgs"
-    t.integer  "user_id"
     t.boolean  "active"
-    t.string   "relation"
     t.boolean  "is_emergency_contact"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "households", force: true do |t|
@@ -74,6 +72,7 @@ ActiveRecord::Schema.define(version: 20160622182123) do
     t.boolean  "poi_checkoff"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "guardian_id"
   end
 
   create_table "registrations", force: true do |t|
@@ -122,6 +121,14 @@ ActiveRecord::Schema.define(version: 20160622182123) do
     t.string   "instagram"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "birth_certificate"
+    t.string   "emergency_contact_relation"
+    t.string   "school"
+    t.string   "district"
+    t.boolean  "poi_checkoff"
+    t.boolean  "bc_checkoff"
+    t.boolean  "rc_checkoff"
+    t.boolean  "phy_checkoff"
   end
 
   create_table "team_games", force: true do |t|
