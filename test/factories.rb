@@ -30,6 +30,18 @@ FactoryGirl.define do
     date Date.today
   end
 
+  factory :user do
+    username "user123"
+    role "volunteer"
+    email "user123@user.com"
+    password "secret"
+    password_confirmation "secret"
+    active_after Date.today
+    password_reset_token "89ok"
+    password_reset_sent_at Date.today
+    active true
+  end
+
   factory :volunteer do
     association :user
     association :team
@@ -63,18 +75,6 @@ FactoryGirl.define do
     act153_clearance true
     gender "female"
     age_range "18-25"
-  end
-
-  factory :user do
-    username "user123"
-    role "volunteer"
-    email "user123@user.com"
-    password "secret"
-    password_confirmation "secret"
-    active_after Date.today
-    password_reset_token "89ok"
-    password_reset_sent_at Date.today
-    active true
   end
 
   factory :team_game do

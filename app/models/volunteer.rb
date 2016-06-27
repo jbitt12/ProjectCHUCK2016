@@ -3,15 +3,15 @@ class Volunteer < ActiveRecord::Base
 include Activeable
 	
   #Relationship Validations
-	belongs_to :team
-	belongs_to :user
+  belongs_to :team
+  belongs_to :user
   
   
   mount_uploader :volunteer_sign, AvatarUploader
 
   before_save :reformat_cell_phone
   before_save :reformat_day_phone
-  before_save :set_active, on: :create
+  before_save :make_active, on: :create
 
   accepts_nested_attributes_for :user, reject_if: lambda { |user| user[:username].blank? }#, allow_destroy: true
 
@@ -55,10 +55,6 @@ include Activeable
     last_name + ", " + first_name
   end
 
-  def set_active
-    self.active = true
-  end
-  
   private
      # We need to strip non-digits before saving to db
      def reformat_cell_phone
