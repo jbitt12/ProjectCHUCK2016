@@ -1,14 +1,12 @@
 require "activeable"
 class User < ActiveRecord::Base
-include Activeable
+  include Activeable
 
- # Use built-in rails support for password protection
+  # Use built-in rails support for password protection
   has_secure_password
   
-  #Relationship Validations
+  # Relationships
   has_one :volunteer
-  has_one :guardian
-
 
   # validations
   validates :username, presence: true, uniqueness: { case_sensitive: false}
@@ -37,12 +35,12 @@ include Activeable
 
   #for csv
   def self.to_csv(options = {})
-	CSV.generate(options) do |csv|
-		csv << column_names
-		all.each do |user|
-			csv << user.attributes.values_at(*column_names)
-		end
-	end
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |user|
+        csv << user.attributes.values_at(*column_names)
+      end
+    end
   end
   
 end
