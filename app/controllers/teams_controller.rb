@@ -16,6 +16,7 @@ class TeamsController < ApplicationController
     #@students = @team.roster_spots.map { |i| i.student_id }
     @students = @team.roster_spots.active.map{|rs| rs.student}
     @tgames = @team.team_games.chronological
+    @active_rs = @team.active_rs
   end
 
   # GET /teams/new

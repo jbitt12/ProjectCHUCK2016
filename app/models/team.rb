@@ -13,8 +13,8 @@ class Team < ActiveRecord::Base
   #validations
   validates :name, presence: true, uniqueness: true
 
-  validates_numericality_of :num_wins, :num_losses, allow_blank: true
-  validates_numericality_of :max_students
+  validates_numericality_of :num_wins, :num_losses, greater_than: -1, allow_blank: true
+  validates_numericality_of :max_students, greater_than: -1
   validate :valid_bracket_id
   validate :has_available_spots?
 
@@ -75,10 +75,10 @@ class Team < ActiveRecord::Base
     end
   end
 
-  #custom validation: bracket_id exists in the system
+  #custom validation: bracket_id exists and is active in the system
   def valid_bracket_id
-    all_brackets = Bracket.all.to_a.map{|u| u.id}
-    return all_brackets.include?(self.bracket.id)
+    active_brackets = Bracket.all.active.to_a.map{|u| u.id}
+    return active_brackets.include?(self.bracket.id)
   end
 
   #scopes
